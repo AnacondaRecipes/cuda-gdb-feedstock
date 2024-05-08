@@ -19,7 +19,7 @@ source:
 
 build:
   number: 1
-  skip: true  # [osx or win]
+  skip: true  # [osx or (linux and s390x) or win]
 
 test:
   commands:
