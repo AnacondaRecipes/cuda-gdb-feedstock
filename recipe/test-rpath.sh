@@ -6,12 +6,22 @@
 
 errors=""
 
-for bin in `find ${PREFIX}/bin -type f`; do
-    [[ "${bin}" =~ "patchelf" ]] && continue
-    [[ "${bin}" =~ /bin/cuda-gdb$ && ${target_platform} == "linux-64" ]] && continue  # linux-64 cuda-gdb is a shell script
+# Test only the specific binaries that should be from the cuda-gdb package
+cuda_gdb_binaries=("cuda-gdb" "cuda-gdbserver")
 
-    filename=$(basename "${bin}")
-    echo "Artifact to test: ${filename}"
+for binary_name in "${cuda_gdb_binaries[@]}"; do
+    bin="${PREFIX}/bin/${binary_name}"
+    
+    # Skip if binary doesn't exist
+    if [[ ! -f "${bin}" ]]; then
+        echo "Binary not found: ${bin}"
+        continue
+    fi
+    
+    # Skip linux-64 cuda-gdb as it's a shell script
+    [[ "${binary_name}" == "cuda-gdb" && ${target_platform} == "linux-64" ]] && continue
+    
+    echo "Artifact to test: ${binary_name}"
 
     pkg_info=$(conda package -w "${bin}")
     echo "\$PKG_NAME: ${PKG_NAME}"
