@@ -33,9 +33,9 @@ outputs:
       # which is not supported by LIEF and can raise ValueError during
       # overlinking checks. Use specific patterns from files section.
       overlinking_ignore_patterns:  # [linux and aarch64]
-        - "targets/sbsa-linux/lib/{{ name }}*.so*"  # [linux and aarch64]
-        - "targets/sbsa-linux/lib/stubs/{{ name }}*.so*"  # [linux and aarch64]
-        - "lib/{{ name }}*.so*"  # [linux and aarch64]
+        - "targets/sbsa-linux/lib/{{ name }}/*.so*"  # [linux and aarch64]
+        - "targets/sbsa-linux/lib/stubs/{{ name }}/*.so*"  # [linux and aarch64]
+        - "lib/{{ name }}/*.so*"  # [linux and aarch64]
       binary_relocation: false
     files:
       - bin/cuda-gdb
