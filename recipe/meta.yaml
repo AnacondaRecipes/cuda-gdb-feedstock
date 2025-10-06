@@ -74,8 +74,8 @@ outputs:
     files:
       - extras/cuda-gdb-{{ version }}.src.tar.gz
     requirements:
-      build:
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+      #build:
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
       host:
         - cuda-version {{ cuda_version }}
       run:
