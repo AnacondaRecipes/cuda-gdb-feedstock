@@ -1,6 +1,6 @@
 {% set name = "cuda-gdb" %}
-{% set version = "12.4.127" %}
-{% set cuda_version = "12.4" %}
+{% set version = "12.8.90" %}
+{% set cuda_version = "12.8" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-ppc64le" %}  # [ppc64le]
 {% set platform = "linux-sbsa" %}  # [aarch64]
@@ -8,29 +8,26 @@
 {% set extension = "zip" %}  # [win]
 
 package:
-  name: {{ name|lower }}
+  name: {{ name|lower }}-split
   version: {{ version }}
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/cuda_gdb/{{ platform }}/cuda_gdb-{{ platform }}-{{ version }}-archive.{{ extension }}
-  sha256: b882e12dd05dd40e4e742c4f77dfbbb493efab87949548896c84ced4ad90ee08  # [linux64]
-  sha256: 0194505308ef1db8d6699ae8a9bb90928f72ecc0f58a4b3fa9daed162ac0c551  # [ppc64le]
-  sha256: 99fb61a444bc05709bab18288661cd87104c08671e66b61cb7abe096cd008c64  # [aarch64]
+  sha256: f10953b7bb795b1ff59f769da8d2e776f5b0f9e4bf5daf2a6c3bd301250321ff  # [linux64]
+  sha256: b2f7ecf4ee1e01b9c165506797ad99ea446815bdd0fe0e7b4d79ed4c56938032  # [aarch64]
 
 build:
   number: 1
-  skip: true  # [osx or (linux and s390x) or win]
+  skip: true  # [osx or win or ppc64le]
 
-test:
-  commands:
-    - test -f $PREFIX/bin/cuda-gdb
-    - test -f $PREFIX/bin/cuda-gdbserver
-    - test -f $PREFIX/extras/Debugger/Readme.txt
-    - test -d $PREFIX/share/gdb/syscalls
-    - test -d $PREFIX/share/gdb/system-gdbinit
+requirements:
+  build:
+    - cf-nvidia-tools 1.*  # [linux]
 
 outputs:
   - name: cuda-gdb
+    build:
+      binary_relocation: false
     files:
       - bin/cuda-gdb
       - bin/cuda-gdbserver
@@ -40,7 +37,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - {{ stdlib("c") }}
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
       host:
         - cuda-version {{ cuda_version }}
         - expat                                 # [aarch64]
@@ -49,7 +47,18 @@ outputs:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
       run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
-    # Tests are defined at the top level, due to package/output name conflicts.
+    test:
+      requires:
+        - patchelf                                                # [linux]
+      files:
+        - test-rpath.sh                                           # [linux]
+      commands:
+        - test -f $PREFIX/bin/cuda-gdb
+        - test -f $PREFIX/bin/cuda-gdbserver
+        - test -f $PREFIX/extras/Debugger/Readme.txt
+        - test -d $PREFIX/share/gdb/syscalls
+        - test -d $PREFIX/share/gdb/system-gdbinit
+        - bash test-rpath.sh                                      # [linux]
     about:
       home: https://developer.nvidia.com/cuda-toolkit
       license_file: LICENSE
@@ -94,10 +103,11 @@ about:
   license_url: https://docs.nvidia.com/cuda/eula/index.html
   summary: CUDA-GDB is the NVIDIA tool for debugging CUDA applications
   description: |
-        CUDA-GDB is the NVIDIA tool for debugging CUDA applications running on Linux.
-        CUDA-GDB is an extension to the x86-64 port of GDB, the GNU Project debugger.
+    CUDA-GDB is the NVIDIA tool for debugging CUDA applications running on Linux.
+    CUDA-GDB is an extension to the x86-64 port of GDB, the GNU Project debugger.
   doc_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
 
 extra:
   recipe-maintainers:
     - conda-forge/cuda
+  feedstock-name: cuda-gdb
