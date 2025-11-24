@@ -6,8 +6,9 @@
 
 errors=""
 
-# Test only the specific binaries that should be from the cuda-gdb package
-cuda_gdb_binaries=("cuda-gdb" "cuda-gdbserver")
+for bin in `find ${PREFIX}/bin -type f`; do
+    [[ "${bin}" =~ "patchelf" ]] && continue
+    [[ "${bin}" =~ /bin/cuda-gdb$ ]] && continue  # cuda-gdb is a shell script
 
 for binary_name in "${cuda_gdb_binaries[@]}"; do
     bin="${PREFIX}/bin/${binary_name}"

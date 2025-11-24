@@ -15,7 +15,7 @@ for i in `ls`; do
     if [[ $i == "bin" ]]; then
         for j in `ls "${i}"`; do
             [[ -f "bin/${j}" ]] || continue
-            [[ ${j} == "cuda-gdb" && ${target_platform} == "linux-64" ]] && continue # cuda-gdb is a shell script for linux-64
+            [[ ${j} == "cuda-gdb" ]] && continue # cuda-gdb is a shell script
 
             echo patchelf --force-rpath --set-rpath "\$ORIGIN/../lib:\$ORIGIN/../${targetsDir}/lib" "${i}/${j}" ...
             patchelf --force-rpath --set-rpath "\$ORIGIN/../lib:\$ORIGIN/../${targetsDir}/lib" "${i}/${j}"
