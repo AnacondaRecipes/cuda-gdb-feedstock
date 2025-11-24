@@ -2,7 +2,6 @@
 {% set version = "13.0.85" %}
 {% set cuda_version = "13.0" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
-{% set platform = "linux-ppc64le" %}  # [ppc64le]
 {% set platform = "linux-sbsa" %}  # [aarch64]
 {% set extension = "tar.xz" %}  # [not win]
 {% set extension = "zip" %}  # [win]
@@ -18,7 +17,7 @@ source:
 
 build:
   number: 0
-  skip: true  # [osx or win or ppc64le]
+  skip: true  # [osx or win]
 
 requirements:
   build:
@@ -68,13 +67,14 @@ outputs:
         CUDA-GDB is the NVIDIA tool for debugging CUDA applications running on Linux.
         CUDA-GDB is an extension to the x86-64 port of GDB, the GNU Project debugger.
       doc_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
+      dev_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
 
   - name: cuda-gdb-src
     files:
       - extras/cuda-gdb-{{ version }}.src.tar.gz
     requirements:
-      #build:
-        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+      build:
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -94,6 +94,7 @@ outputs:
         CUDA-GDB is the NVIDIA tool for debugging CUDA applications running on Linux.
         CUDA-GDB is an extension to the x86-64 port of GDB, the GNU Project debugger.
       doc_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
+      dev_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
 
 about:
   home: https://developer.nvidia.com/cuda-toolkit
@@ -105,8 +106,11 @@ about:
     CUDA-GDB is the NVIDIA tool for debugging CUDA applications running on Linux.
     CUDA-GDB is an extension to the x86-64 port of GDB, the GNU Project debugger.
   doc_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
+  dev_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
 
 extra:
+  skip-lints:
+    - license_file_overspecified
   recipe-maintainers:
     - conda-forge/cuda
   feedstock-name: cuda-gdb
