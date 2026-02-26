@@ -6,7 +6,7 @@
 
 errors=""
 
-for bin in `find ${PREFIX}/bin -type f`; do
+for bin in `find ${PREFIX}/bin/cuda-gdb* -type f`; do
     [[ "${bin}" =~ "patchelf" ]] && continue
     # Ignore xmlwf from expat package till expat-feedstock is updated to multi-output recipe
     # See PKG-10990 for more details.

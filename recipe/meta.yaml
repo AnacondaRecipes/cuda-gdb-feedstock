@@ -3,6 +3,10 @@
 {% set cuda_version = "13.1" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
+{% set target_name = "x86_64-linux" %}  # [linux64]
+{% set target_name = "ppc64le-linux" %}  # [ppc64le]
+{% set target_name = "sbsa-linux" %}  # [aarch64]
+{% set target_name = "x64" %}  # [win]
 {% set extension = "tar.xz" %}  # [not win]
 {% set extension = "zip" %}  # [win]
 
@@ -16,12 +20,15 @@ source:
   sha256: d00656f12034fc5ed7ceb93d61a6ed6a01fa7118ae65d0a28495f529f9674aaa  # [aarch64]
 
 build:
-  number: 0
+  number: 1
   skip: true  # [osx or win]
+  skip: true  # [py<38 or py>312]
 
 requirements:
   build:
     - cf-nvidia-tools 1.*  # [linux]
+  host:
+    - python
 
 outputs:
   - name: cuda-gdb
@@ -29,9 +36,13 @@ outputs:
       binary_relocation: false
     files:
       - bin/cuda-gdb
+      # We remove the wrapper script and rename one of the below to cuda-gdb
+      # - bin/cuda-gdb-minimal
+      # - bin/cuda-gdb-python{{ PY_VER }}-tui
       - bin/cuda-gdbserver
-      - extras/Debugger
-      - share/gdb
+      - targets/{{ target_name }}/include
+      # - extras/Debugger  # moved to targets/{{ target_name }}
+      # - share/gdb  # revends components from gdb package
     requirements:
       build:
         - {{ compiler("c") }}
@@ -40,12 +51,16 @@ outputs:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
       host:
         - cuda-version {{ cuda_version }}
-        - expat                                 # [aarch64]
         - gmp
+        - ncurses
+        - python
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
-      run_constrained:
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - ncurses
+        - python
+        # https://docs.nvidia.com/cuda/cuda-gdb/index.html#release-notes
+        # Check release notes for supported GDB
+        - gdb >=14.2,<15.0
     test:
       requires:
         - patchelf                                                # [linux]
@@ -53,14 +68,22 @@ outputs:
         - test-rpath.sh                                           # [linux]
       commands:
         - test -f $PREFIX/bin/cuda-gdb
+        # We remove the wrapper script and rename one of the below to cuda-gdb
+        # - test -f $PREFIX/bin/cuda-gdb-minimal
+        # - test -f $PREFIX/bin/cuda-gdb-python{{ PY_VER }}-tui
         - test -f $PREFIX/bin/cuda-gdbserver
+        - test -f $PREFIX/targets/{{ target_name }}/include/cudadebugger.h
+        - test ! -d $PREFIX/extras/Debugger
         - test -d $PREFIX/share/gdb/syscalls
         - test -d $PREFIX/share/gdb/system-gdbinit
         - bash test-rpath.sh                                      # [linux]
+        - cuda-gdb --version
+        # - cuda-gdb-minimal --version
+        - cuda-gdbserver --version
     about:
       home: https://developer.nvidia.com/cuda-toolkit
       license_file: LICENSE
-      license: LicenseRef-NVIDIA-End-User-License-Agreement
+      license: GPL-3.0-only
       license_url: https://docs.nvidia.com/cuda/eula/index.html
       summary: CUDA-GDB is the NVIDIA tool for debugging CUDA applications
       description: |
@@ -79,15 +102,13 @@ outputs:
         - cuda-version {{ cuda_version }}
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
-      run_constrained:
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
         - test -f $PREFIX/extras/cuda-gdb-{{ version }}.src.tar.gz
     about:
       home: https://developer.nvidia.com/cuda-toolkit
       license_file: LICENSE
-      license: LicenseRef-NVIDIA-End-User-License-Agreement
+      license: GPL-3.0-only
       license_url: https://docs.nvidia.com/cuda/eula/index.html
       summary: CUDA-GDB is the NVIDIA tool for debugging CUDA applications
       description: |
@@ -99,7 +120,7 @@ outputs:
 about:
   home: https://developer.nvidia.com/cuda-toolkit
   license_file: LICENSE
-  license: LicenseRef-NVIDIA-End-User-License-Agreement
+  license: GPL-3.0-only
   license_url: https://docs.nvidia.com/cuda/eula/index.html
   summary: CUDA-GDB is the NVIDIA tool for debugging CUDA applications
   description: |

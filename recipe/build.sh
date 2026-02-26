@@ -7,6 +7,16 @@
 [[ ${target_platform} == "linux-ppc64le" ]] && targetsDir="targets/ppc64le-linux"
 [[ ${target_platform} == "linux-aarch64" ]] && targetsDir="targets/sbsa-linux"
 
+mkdir -p "${PREFIX}/${targetsDir}"
+mv -v extras/Debugger/include "${PREFIX}/${targetsDir}"
+
+rm bin/cuda-gdb
+if [[ ${PY_VER:-0} == "0" ]]; then
+    mv -v "bin/cuda-gdb-minimal" bin/cuda-gdb
+else
+    mv -v "bin/cuda-gdb-python${PY_VER}-tui" bin/cuda-gdb
+fi
+
 for i in `ls`; do
     [[ $i == "build_env_setup.sh" ]] && continue
     [[ $i == "conda_build.sh" ]] && continue
@@ -15,7 +25,6 @@ for i in `ls`; do
     if [[ $i == "bin" ]]; then
         for j in `ls "${i}"`; do
             [[ -f "bin/${j}" ]] || continue
-            [[ ${j} == "cuda-gdb" ]] && continue # cuda-gdb is a shell script
 
             echo patchelf --force-rpath --set-rpath "\$ORIGIN/../lib:\$ORIGIN/../${targetsDir}/lib" "${i}/${j}" ...
             patchelf --force-rpath --set-rpath "\$ORIGIN/../lib:\$ORIGIN/../${targetsDir}/lib" "${i}/${j}"
