@@ -4,7 +4,6 @@
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
 {% set target_name = "x86_64-linux" %}  # [linux64]
-{% set target_name = "ppc64le-linux" %}  # [ppc64le]
 {% set target_name = "sbsa-linux" %}  # [aarch64]
 {% set target_name = "x64" %}  # [win]
 {% set extension = "tar.xz" %}  # [not win]
@@ -85,12 +84,13 @@ outputs:
       license_file: LICENSE
       license: GPL-3.0-only
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: GPL
       summary: CUDA-GDB is the NVIDIA tool for debugging CUDA applications
       description: |
         CUDA-GDB is the NVIDIA tool for debugging CUDA applications running on Linux.
         CUDA-GDB is an extension to the x86-64 port of GDB, the GNU Project debugger.
       doc_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
-      dev_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
+      dev_url: https://github.com/NVIDIA/cuda-gdb
 
   - name: cuda-gdb-src
     files:
@@ -110,24 +110,26 @@ outputs:
       license_file: LICENSE
       license: GPL-3.0-only
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: GPL
       summary: CUDA-GDB is the NVIDIA tool for debugging CUDA applications
       description: |
         CUDA-GDB is the NVIDIA tool for debugging CUDA applications running on Linux.
         CUDA-GDB is an extension to the x86-64 port of GDB, the GNU Project debugger.
       doc_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
-      dev_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
+      dev_url: https://github.com/NVIDIA/cuda-gdb
 
 about:
   home: https://developer.nvidia.com/cuda-toolkit
   license_file: LICENSE
   license: GPL-3.0-only
   license_url: https://docs.nvidia.com/cuda/eula/index.html
+  license_family: GPL
   summary: CUDA-GDB is the NVIDIA tool for debugging CUDA applications
   description: |
     CUDA-GDB is the NVIDIA tool for debugging CUDA applications running on Linux.
     CUDA-GDB is an extension to the x86-64 port of GDB, the GNU Project debugger.
   doc_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
-  dev_url: https://docs.nvidia.com/cuda/cuda-gdb/index.html
+  dev_url: https://github.com/NVIDIA/cuda-gdb
 
 extra:
   skip-lints:
