@@ -1,2 +1,5 @@
 arm_variant_type: # [aarch64]
   - sbsa          # [aarch64]
+skip_python:
+  - true
+  - false

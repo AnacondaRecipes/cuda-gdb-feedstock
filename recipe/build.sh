@@ -11,7 +11,7 @@ mkdir -p "${PREFIX}/${targetsDir}"
 mv -v extras/Debugger/include "${PREFIX}/${targetsDir}"
 
 rm bin/cuda-gdb
-if [[ ${PY_VER:-0} == "0" ]]; then
+if [[ ${PY_VER:-0} == "0" || ${skip_python} == "true" ]]; then
     mv -v "bin/cuda-gdb-minimal" bin/cuda-gdb
 else
     mv -v "bin/cuda-gdb-python${PY_VER}-tui" bin/cuda-gdb
