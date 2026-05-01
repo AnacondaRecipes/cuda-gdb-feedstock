@@ -1,5 +1,7 @@
 arm_variant_type: # [aarch64]
   - sbsa          # [aarch64]
+
+# For building a non-python variant of cuda-gdb
 skip_python:
   - true
   - false

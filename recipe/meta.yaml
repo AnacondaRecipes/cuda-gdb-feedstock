@@ -22,6 +22,7 @@ build:
   number: 0
   skip: true  # [osx or win]
   skip: true  # [py<38 or py>312]
+  # For the highest supported python, we also build the no-python variant
   skip: true  # [skip_python and (py!=312)]
 
 requirements:
@@ -133,8 +134,6 @@ about:
   dev_url: https://github.com/NVIDIA/cuda-gdb
 
 extra:
-  skip-lints:
-    - license_file_overspecified
   recipe-maintainers:
     - conda-forge/cuda
   feedstock-name: cuda-gdb
