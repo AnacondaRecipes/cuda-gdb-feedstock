@@ -3,3 +3,6 @@ upstream_sources:
   - webpage:
       url: https://api.anaconda.org/package/conda-forge/cuda-gdb
       regex: '"version":\s*"([^"]+)"'
+    packages:
+      - cuda-gdb
+      - cuda-gdb-src
