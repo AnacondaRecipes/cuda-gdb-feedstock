@@ -20,7 +20,13 @@ fi
 # Fixes an issue caused by build differences between conda-forge and distro ncurses builds.
 # conda-forge has separate libraries for libtinfo and libtinfow. Loading both simultaneously
 # causes a segmentation fault due to duplicated global state.
+#
+# Note (Aug 2026): We were unable to replicate the segfault mentioned above on the cuda-gdb w/ python builds.
+# Additionally, according to ncurses docs, libtinfo.so and libtinfow.so should have the same ABI.
+# In any case, we are adding a second replace for the NEEDED to make sure the linkage is always
+# against the wide ncurses libs.
 patchelf --replace-needed libtinfo.so.6 libtinfow.so.6 bin/cuda-gdb
+patchelf --replace-needed libncurses.so.6 libncursesw.so.6 bin/cuda-gdb
 
 for i in `ls`; do
     [[ $i == "build_env_setup.sh" ]] && continue
