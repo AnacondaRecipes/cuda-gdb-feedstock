@@ -1,6 +1,6 @@
 {% set name = "cuda-gdb" %}
-{% set version = "13.3.73" %}
-{% set cuda_version = "13.3" %}
+{% set version = "13.4.49" %}
+{% set cuda_version = "13.4" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
 {% set target_name = "x86_64-linux" %}  # [linux64]
@@ -8,6 +8,8 @@
 {% set target_name = "x64" %}  # [win]
 {% set extension = "tar.xz" %}  # [not win]
 {% set extension = "zip" %}  # [win]
+{% set sha256 = "39df9b20ab6b6497bc67212577f4947f51e1e31a79516248b1563cd01de926ea" %}  # [linux64]
+{% set sha256 = "8c9ab9056bdb744550b5e9473b2d5d0161d5ce8ac74a7554f2a4f4a8708213b1" %}  # [aarch64]
 
 package:
   name: {{ name|lower }}-split
@@ -15,15 +17,14 @@ package:
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/cuda_gdb/{{ platform }}/cuda_gdb-{{ platform }}-{{ version }}-archive.{{ extension }}
-  sha256: 122a4f1612670182a8ccb72b1d29936a1dda956bdc60ce8a6e9a2998fea9aa8a  # [linux64]
-  sha256: b61d329fedbe714781113c4e117c83e4c1f392fd868211a2e1c07b2b70989fd1  # [aarch64]
+  sha256: {{ sha256 }}
 
 build:
   number: 0
-  skip: true  # [osx or win]
-  skip: true  # [py<38 or py>312]
-  # For the highest supported python, we also build the no-python variant
-  skip: true  # [skip_python and (py!=312)]
+  # Combined into one key: conda-build ORs independent selector-tagged skips, but the
+  # recipe parsers conda-forge lints with read the YAML literally and reject the
+  # repeated key. For the highest supported python we also build the no-python variant.
+  skip: true  # [osx or win or ppc64le or py<38 or py>312 or (skip_python and (py!=312))]
 
 requirements:
   build:
