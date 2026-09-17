@@ -21,9 +21,8 @@ source:
 
 build:
   number: 0
-  # Combined into one key: conda-build ORs independent selector-tagged skips, but the
-  # recipe parsers conda-forge lints with read the YAML literally and reject the
-  # repeated key. For the highest supported python we also build the no-python variant.
+  # Combined into one selector for linter compatibility.
+  # For the highest supported python we also build the no-python variant.
   skip: true  # [osx or win or ppc64le or py<38 or py>312 or (skip_python and (py!=312))]
 
 requirements:
@@ -135,6 +134,8 @@ about:
   dev_url: https://github.com/NVIDIA/cuda-gdb
 
 extra:
+  skip-lints:
+    - deprecate_license_url
   recipe-maintainers:
     - conda-forge/cuda
   feedstock-name: cuda-gdb
