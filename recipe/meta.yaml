@@ -52,8 +52,8 @@ outputs:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
       host:
         - cuda-version {{ cuda_version }}
-        - gmp
-        - ncurses
+        - gmp {{ gmp }}
+        - ncurses {{ ncurses }}
         - python  # [not skip_python]
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
