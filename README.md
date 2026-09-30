@@ -37,6 +37,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-cuda--gdb-green.svg)](https://anaconda.org/conda-forge/cuda-gdb) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cuda-gdb.svg)](https://anaconda.org/conda-forge/cuda-gdb) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cuda-gdb.svg)](https://anaconda.org/conda-forge/cuda-gdb) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cuda-gdb.svg)](https://anaconda.org/conda-forge/cuda-gdb) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-cuda--gdb--src-green.svg)](https://anaconda.org/conda-forge/cuda-gdb-src) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cuda-gdb-src.svg)](https://anaconda.org/conda-forge/cuda-gdb-src) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cuda-gdb-src.svg)](https://anaconda.org/conda-forge/cuda-gdb-src) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cuda-gdb-src.svg)](https://anaconda.org/conda-forge/cuda-gdb-src) |
 
 Installing cuda-gdb
 ===================
@@ -48,31 +49,73 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `cuda-gdb` can be installed with `conda`:
+How to use
+----------
+
+<details>
+<summary>With conda</summary>
 
 ```
-conda install cuda-gdb
+conda install cuda-gdb cuda-gdb-src
 ```
 
-or with `mamba`:
+</details>
+
+<details>
+<summary>With mamba</summary>
 
 ```
-mamba install cuda-gdb
+mamba install cuda-gdb cuda-gdb-src
 ```
 
-It is possible to list all of the versions of `cuda-gdb` available on your platform with `conda`:
+</details>
+
+<details>
+<summary>With pixi</summary>
+
+```
+# for adding to your local project
+pixi add cuda-gdb cuda-gdb-src
+# for installing globally
+pixi global install cuda-gdb cuda-gdb-src
+```
+
+</details>
+
+Search package versions
+-----------------------
+
+It is possible to list all of the versions of `cuda-gdb` available on your platform:
+
+<details>
+<summary>With conda</summary>
 
 ```
 conda search cuda-gdb --channel conda-forge
 ```
 
-or with `mamba`:
+</details>
+
+<details>
+<summary>With mamba</summary>
 
 ```
 mamba search cuda-gdb --channel conda-forge
 ```
 
-Alternatively, `mamba repoquery` may provide more information:
+</details>
+
+<details>
+<summary>With pixi</summary>
+
+```
+pixi search cuda-gdb --channel conda-forge
+```
+
+</details>
+
+<details>
+<summary>With mamba repoquery, which may provide more information</summary>
 
 ```
 # Search all versions available on your platform:
@@ -84,6 +127,8 @@ mamba repoquery whoneeds cuda-gdb --channel conda-forge
 # List dependencies of `cuda-gdb`:
 mamba repoquery depends cuda-gdb --channel conda-forge
 ```
+
+</details>
 
 
 About conda-forge

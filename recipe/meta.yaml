@@ -1,5 +1,5 @@
 {% set name = "cuda-gdb" %}
-{% set version = "13.4.49" %}
+{% set version = "13.4.92" %}
 {% set cuda_version = "13.4" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
@@ -8,8 +8,8 @@
 {% set target_name = "x64" %}  # [win]
 {% set extension = "tar.xz" %}  # [not win]
 {% set extension = "zip" %}  # [win]
-{% set sha256 = "39df9b20ab6b6497bc67212577f4947f51e1e31a79516248b1563cd01de926ea" %}  # [linux64]
-{% set sha256 = "8c9ab9056bdb744550b5e9473b2d5d0161d5ce8ac74a7554f2a4f4a8708213b1" %}  # [aarch64]
+{% set sha256 = "7057f3cff0bed6927316114d281d6b8ea8d92c095be601721639062633da5823" %}  # [linux64]
+{% set sha256 = "5a0fac55b933dd16630d81c9b9491f4f0a88894dbcddf1efe304797df9d0d20c" %}  # [aarch64]
 
 package:
   name: {{ name|lower }}-split
@@ -52,8 +52,8 @@ outputs:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
       host:
         - cuda-version {{ cuda_version }}
-        - gmp
-        - ncurses
+        - gmp {{ gmp }}
+        - ncurses {{ ncurses }}
         - python  # [not skip_python]
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
