@@ -6,3 +6,28 @@ upstream_sources:
     packages:
       - cuda-gdb
       - cuda-gdb-src
+  - webpage:
+      url: https://api.anaconda.org/package/conda-forge/cuda-gdb
+      regex: '"version":\s*"(13\.0(?:\.\d+)*)"'
+    feedstock_branch: '13.0'
+    version_matchspec: '>=13.0,<13.1'
+    supported: true
+    packages:
+      - cuda-gdb
+      - cuda-gdb-src
+  - webpage:
+      url: https://api.anaconda.org/package/conda-forge/cuda-gdb
+      regex: '"version":\s*"(13\.1(?:\.\d+)*)"'
+    feedstock_branch: '13.1'
+    version_matchspec: '>=13.1,<13.2'
+    supported: true
+    packages:
+      - cuda-gdb
+  - webpage:
+      url: https://api.anaconda.org/package/conda-forge/cuda-gdb
+      regex: '"version":\s*"(13\.2(?:\.\d+)*)"'
+    feedstock_branch: '13.2'
+    version_matchspec: '>=13.2,<13.3'
+    supported: true
+    packages:
+      - cuda-gdb
