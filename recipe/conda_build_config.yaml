@@ -5,3 +5,8 @@ c_stdlib_version:  # [linux]
 skip_python:
   - true
   - false
+c_stdlib:
+  - sysroot        # [linux]
+  - vs             # [win]
+c_stdlib_version:  # [linux]
+  - '2.28'         # [linux]

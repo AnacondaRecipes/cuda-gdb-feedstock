@@ -1,6 +1,6 @@
 {% set name = "cuda-gdb" %}
-{% set version = "13.4.92" %}
-{% set cuda_version = "13.4" %}
+{% set version = "13.5.25" %}
+{% set cuda_version = "13.5" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-ppc64le" %}  # [ppc64le]
 {% set platform = "linux-sbsa" %}  # [aarch64]
@@ -10,8 +10,8 @@
 {% set target_name = "x64" %}  # [win]
 {% set extension = "tar.xz" %}  # [not win]
 {% set extension = "zip" %}  # [win]
-{% set sha256 = "7057f3cff0bed6927316114d281d6b8ea8d92c095be601721639062633da5823" %}  # [linux64]
-{% set sha256 = "5a0fac55b933dd16630d81c9b9491f4f0a88894dbcddf1efe304797df9d0d20c" %}  # [aarch64]
+{% set sha256 = "65d86e2c81dd4d2afcdeef6c839d433aa23f48a4431ccaf5700928853b51855e" %}  # [linux64]
+{% set sha256 = "aeeb8027b9b7cff86964cfec300ca838c5313025a59b967efc3e9d390c4364f6" %}  # [aarch64]
 
 package:
   name: {{ name|lower }}-split
@@ -26,7 +26,7 @@ build:
   # Combined into one key: conda-build ORs independent selector-tagged skips, but the
   # recipe parsers conda-forge lints with read the YAML literally and reject the
   # repeated key. For the highest supported python we also build the no-python variant.
-  skip: true  # [osx or win or ppc64le or py<38 or py>312 or (skip_python and (py!=312))]
+  skip: true  # [osx or win or ppc64le or py<38 or py>314 or (skip_python and (py!=314))]
 
 requirements:
   build:
